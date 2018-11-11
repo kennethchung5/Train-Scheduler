@@ -4,8 +4,12 @@ body {
 }
 
 .jumbotron {
-    background-color: gray;
-    color: white;
+    background-color: black;
+    color: greenyellow;
+}
+
+.card {
+    background-color: silver;
 }
 
 .card-header {
@@ -15,15 +19,15 @@ body {
 }
 
 
+
 th, td {
     text-align: center;
-    font-weight: bold;
 }
 .leftText {
     text-align: left;
 }
 
-
+/* color text to indicate whether train is currently running */
 .inService {
     color: greenyellow;
 }
@@ -32,9 +36,17 @@ th, td {
 }
 
 
+th {
+    background-color: gray;
+}
 .oddRow {
-    background-color: darkblue;
+    background-color: black;
 }
 .evenRow {
-    background-color: teal;
+    background-color: darkblue;
+}
+
+tr:hover {
+    /* I couldn't figure out how to override Bootstrap styling for this property by increasing specificity, so I used !important */
+    background-color: gray !important;
 }
