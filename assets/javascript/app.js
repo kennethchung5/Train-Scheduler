@@ -17,53 +17,60 @@ $("form").on("submit", function(event) {
 
     var newEntry = {
         name: $("#nameInput").val().trim(),
-        destination: $("#destinationInput").val().trim(),
-        frequency: $("#frequencyInput").val().trim(),
-        start: $("#startInput").val().trim()
+        destination: $("#destinationInput").val().trim(),        
+        start: $("#startInput").val().trim(),
+        frequency: $("#frequencyInput").val().trim()
     };
 
     database.ref().push(newEntry);
 
     $("#nameInput").val("");
     $("#destinationInput").val("");
-    $("#frequencyInput").val("");
     $("#startInput").val("");
-
+    $("#frequencyInput").val("");
+    
 });
 
 database.ref().on("child_added", function(snapshot) {
 
-    //** REVISIT TIME CALCULATION
-
     var newName = snapshot.val().name;
     var newDestination = snapshot.val().destination;
-    var newFrequency = snapshot.val().frequency;
     var newStart = snapshot.val().start;
+    var newFrequency = snapshot.val().frequency;
 
-    console.log("newFrequency: " + newFrequency);
-    console.log("newStart: " + newStart);
+    var timeToNext = 0;
+    var nextTrain;
 
-    // var newStartConverted = moment(newStart, "HH:mm").subtract(1, "years");
-    var newStartConverted = moment(newStart, "HH:mm");
-    console.log("newStartConverted: " + newStartConverted);
+    console.log("newStart: " + newStart + "; newFrequency: " + newFrequency);
 
-    var currentTime = moment();
-    console.log("currentTime (formatted): " + moment(currentTime).format("hh:mm"));
+    // compare newStart to current time.
+    var timeDiff = moment().diff(moment(newStart, "HH:mm"), "minutes");
+    console.log("The time difference is " + timeDiff + " minutes.");
 
-    var diffTime = moment().diff(moment(newStartConverted), "minutes");
-    console.log("diffTime: " + diffTime);
-    
-    var tRemainder = diffTime % newFrequency;
-    console.log("tRemainder: " + tRemainder);
+    // check sign of timeDiff; if negative, then consider train to be not currently running
+    if (timeDiff < 0) {
+        timeToNext = -1 * timeDiff;
+        
+        nextTrain = moment(newStart, "HH:mm").format("hh:mm A");        
+    }
+    else {
+        timeToNext = newFrequency - (timeDiff % newFrequency);
+        
+        nextTrain = moment().add(timeToNext, "minutes").format("hh:mm A");
+    }
 
-    var timeToNext = newFrequency - tRemainder;
-    console.log("timeToNext: " + timeToNext);
+    console.log("The next train will arrive in " + timeToNext + " minutes.");
+    console.log("The next train will arrive at " + nextTrain + ".");
+    console.log("---")
 
-    var nextTrain = moment().add(timeToNext, "minutes");
-    console.log("nextTrain (formatted): " + moment(nextTrain).format("hh:mm"));
-    console.log("----")
-   
+    var newRow = $("<tr>").append(
+        $("<td>").text(newName),
+        $("<td>").text(newDestination),
+        $("<td>").text(newFrequency),
+        $("<td>").text(nextTrain),
+        $("<td>").text(timeToNext)
+    );
 
-    
+    $("#trainTable > tbody").append(newRow);
 
-})
+});
