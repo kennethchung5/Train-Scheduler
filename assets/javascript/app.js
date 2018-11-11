@@ -41,11 +41,11 @@ database.ref().on("child_added", function(snapshot) {
     var timeToNext = 0;
     var nextTrain;
 
-    console.log("newStart: " + newStart + "; newFrequency: " + newFrequency);
+    // console.log("newStart: " + newStart + "; newFrequency: " + newFrequency);
 
     // compare newStart to current time.
     var timeDiff = moment().diff(moment(newStart, "HH:mm"), "minutes");
-    console.log("The time difference is " + timeDiff + " minutes.");
+    // console.log("The time difference is " + timeDiff + " minutes.");
 
     // check sign of timeDiff; if negative, then consider train to be not currently running
     if (timeDiff < 0) {
@@ -59,13 +59,16 @@ database.ref().on("child_added", function(snapshot) {
         nextTrain = moment().add(timeToNext, "minutes").format("hh:mm A");
     }
 
-    console.log("The next train will arrive in " + timeToNext + " minutes.");
-    console.log("The next train will arrive at " + nextTrain + ".");
-    console.log("---")
+    // console.log("The next train will arrive in " + timeToNext + " minutes.");
+    // console.log("The next train will arrive at " + nextTrain + ".");
+    // console.log("---")
+
+    
 
     var newRow = $("<tr>").append(
-        $("<td>").text(newName),
-        $("<td>").text(newDestination),
+        $("<td class='leftText'>").text(newName),
+        $("<td class='leftText'>").text(newDestination),
+        $("<td>").text(moment(newStart, "HH:mm").format("hh:mm A")),
         $("<td>").text(newFrequency),
         $("<td>").text(nextTrain),
         $("<td>").text(timeToNext)

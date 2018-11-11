@@ -14,3 +14,12 @@ body {
 
     font-weight: bold;
 }
+
+
+th, td {
+    text-align: center;
+}
+
+.leftText {
+    text-align: left;
+}
