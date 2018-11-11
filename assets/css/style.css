@@ -18,6 +18,19 @@ body {
     font-weight: bold;
 }
 
+.card-text {
+    color: red;
+}
+.inServiceStyle {
+    color: greenyellow;
+    background-color: gray;
+    padding: 0 4px;
+}
+.outServiceStyle {
+    color: gold;
+    background-color: gray;
+    padding: 0 4px;
+}
 
 
 th, td {
@@ -26,6 +39,7 @@ th, td {
 .leftText {
     text-align: left;
 }
+
 
 /* color text to indicate whether train is currently running */
 .inService {
