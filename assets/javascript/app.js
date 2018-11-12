@@ -17,19 +17,51 @@ var rowCounter = 1;
 $("form").on("submit", function(event) {
     event.preventDefault();
 
-    var newEntry = {
-        name: $("#nameInput").val().trim(),
-        destination: $("#destinationInput").val().trim(),        
-        start: $("#startInput").val().trim(),
-        frequency: $("#frequencyInput").val().trim()
+    // validate input: 1. nameInput and destinationInput are not blank 2. startInput is in "HH:mm" format 3. frequencyInput is an integer (technically a string, but equal in value) 
+    var nameInputCheck = $("#nameInput").val().trim();
+    var destinationInputCheck = $("#destinationInput").val().trim();
+    var startInputCheck = $("#startInput").val().trim();
+    var frequencyInputCheck = $("#frequencyInput").val().trim();
+    
+    // if any rejection condition is met, then alert the user, clear the bad value, and set focus on that input field
+    // proceed with pushing an object to database only if the inputs clear the checks
+    if (nameInputCheck == "") {
+        alert("Please enter a Train Name; this cannot be blank.");
+        $("#nameInput").val("");
+        $("#nameInput").focus();
+    }
+    else if (destinationInputCheck == "") {
+        alert("Please enter a Destination; this cannot be blank.");
+        $("#destinationInput").val("");
+        $("#destinationInput").focus();
+    }
+    else if (moment(startInputCheck, "HH:mm", true).isValid() === false) {
+        alert('Invalid input detected for "First Train Time" field! Please enter the time in 24-hr format (HH:mm).');
+        $("#startInput").val("");
+        $("#startInput").focus();
+    }
+    else if (frequencyInputCheck != parseInt(frequencyInputCheck)) {
+        alert('Invalid input detected for "Frequency" field! Please enter the frequency (in minutes) as an integer.');
+        $("#frequencyInput").val("");
+        $("#frequencyInput").focus();
+    }
+    else {
+        var newEntry = {
+            name: nameInputCheck,
+            destination: destinationInputCheck,
+            start: startInputCheck,
+            frequency: frequencyInputCheck
+        };
+
+        database.ref().push(newEntry);
+
+        $("#nameInput").val("");
+        $("#destinationInput").val("");
+        $("#startInput").val("");
+        $("#frequencyInput").val("");
+
+        $("#nameInput").focus();
     };
-
-    database.ref().push(newEntry);
-
-    $("#nameInput").val("");
-    $("#destinationInput").val("");
-    $("#startInput").val("");
-    $("#frequencyInput").val("");
     
 });
 
