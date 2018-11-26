@@ -1,6 +1,8 @@
 # Train-Scheduler
 
-This is an interactive app written in JavaScript with jQuery. The app is linked to a Firebase realtime database and uses the Moment.js library to perform calculations and formatting of time. 
+https://kennethchung5.github.io/Train-Scheduler/
+
+This is an interactive app written in JavaScript with jQuery. The app is linked to a Firebase realtime database and uses the Moment.js library to perform calculations with time. 
 
 The app features a table displaying these data about (fictitious) train lines: name, destination, initial train time, frequency (the regular interval between trains of the line), time of the next train, and time until the next train. The Firebase database stores the first four of these fields. Given the initial time and frequency, and considering the current time, the app derives the last two fields. The last two fields are therefore dynamic and do not need to be stored. 
 
